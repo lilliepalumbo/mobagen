@@ -8,12 +8,17 @@ Vector2f CohesionRule::computeForce(const std::vector<Boid*>& neighborhood, Boid
   // hint: iterate over the neighborhood
 
   // find center of mass
-
-  float centerOfMass;
-  for (i = 0; i < neighborhood.size() - 1; i++)
+  if (neighborhood.size() == 0)
   {
+    Vector2f centerOfMass(0, 0);
+    for (int i = 0; i < neighborhood.size(); i++)
+    {
+      centerOfMass += neighborhood[i]->transform.position;
+    };
+    centerOfMass /= neighborhood.size() - 1;
 
-  };
+    cohesionForce = centerOfMass - boid->transform.position;
+  }
 
   return cohesionForce;
 }
