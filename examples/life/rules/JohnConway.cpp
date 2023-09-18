@@ -7,8 +7,19 @@ void JohnConway::Step(World& world) {
         int neighborCount = CountNeighbors(world, Point2D(x, y));
         if (world.Get(Point2D(x, y)))
         {
-          (neighborCount > 1 && neighborCount < 4) ? true : world.SetNext(Point2D(x, y), false);
+          if(neighborCount < 2 || neighborCount > 3)
+          {
+            world.SetNext(Point2D(x, y), false);
+          }
         }
+        else
+        {
+          if(neighborCount == 3)
+          {
+            world.SetNext(Point2D(x, y), true);
+          }
+        }
+
       }
     }
 }
