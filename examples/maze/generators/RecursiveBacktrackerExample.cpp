@@ -3,7 +3,17 @@
 #include "RecursiveBacktrackerExample.h"
 #include <climits>
 bool RecursiveBacktrackerExample::Step(World* w) {
+  stack.push_back({0,0});
+  while(!stack.empty())
+  {
+    std::vector<Point2D> visiting = getVisitables(w,stack.front());
+    if(!visiting.empty())
+    {
 
+    }
+  }
+
+  return true;
 }
 
 void RecursiveBacktrackerExample::Clear(World* world) {
