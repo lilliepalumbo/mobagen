@@ -18,6 +18,7 @@ public:
   std::string GetName() override { return "Recursive Back-Tracker"; };
   bool Step(World* world) override;
   void Clear(World* world) override;
+  void BreakWall(World* w, Point2D stackTop, Point2D visiting);
 };
 
 #endif  // RECURSIVEBACKTRACKER_H

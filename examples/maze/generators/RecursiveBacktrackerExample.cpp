@@ -3,11 +3,21 @@
 #include "RecursiveBacktrackerExample.h"
 #include <climits>
 bool RecursiveBacktrackerExample::Step(World* w) {
-  stack.push_back({0,0});
+  stack.push_back(randomStartPoint(w));
   while(!stack.empty())
   {
+    visited[stack.front().x][stack.front().y] = true;
     std::vector<Point2D> visiting = getVisitables(w,stack.front());
-    if(!visiting.empty())
+    if(visiting.empty())
+    {
+      stack.pop_back();
+    }
+    else if (visiting.size() == 1)
+    {
+      BreakWall(w ,stack.front(), visiting[0]);
+
+    }
+    else
     {
 
     }
@@ -15,6 +25,8 @@ bool RecursiveBacktrackerExample::Step(World* w) {
 
   return true;
 }
+
+
 
 void RecursiveBacktrackerExample::Clear(World* world) {
   visited.clear();
@@ -42,4 +54,8 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
   std::vector<Point2D> visitables;
 
   return visitables;
+}
+
+void RecursiveBacktrackerExample::BreakWall(World* w, Point2D stackTop, Point2D visiting) {
+
 }
