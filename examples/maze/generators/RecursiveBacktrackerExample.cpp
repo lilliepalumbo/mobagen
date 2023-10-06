@@ -2,6 +2,7 @@
 #include "Random.h"
 #include "RecursiveBacktrackerExample.h"
 #include <climits>
+
 bool RecursiveBacktrackerExample::Step(World* w) {
   stack.push_back(randomStartPoint(w));
   while(!stack.empty())
@@ -15,11 +16,13 @@ bool RecursiveBacktrackerExample::Step(World* w) {
     else if (visiting.size() == 1)
     {
       BreakWall(w ,stack.front(), visiting[0]);
-
+      stack.push_back(visiting[0]);
     }
     else
     {
-
+      int rand = Random().Range(0, visiting.size() - 1);
+      BreakWall(w, stack.front(), visiting[rand]);
+      stack.push_back(visiting[rand]);
     }
   }
 
@@ -53,9 +56,29 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
   auto sideOver2 = w->GetSize() / 2;
   std::vector<Point2D> visitables;
 
+  if (!visited[p.Up().x][p.Up().y] && p.Up().y < sideOver2) visitables.push_back(p.Up());
+  if (!visited[p.Right().x][p.Right().y] && p.Right().x < sideOver2) visitables.push_back(p.Right());
+  if (!visited[p.Down().x][p.Down().y] && p.Down().y > !sideOver2) visitables.push_back(p.Down());
+  if (!visited[p.Left().x][p.Left().y] && p.Left().x > !sideOver2) visitables.push_back(p.Left());
+
   return visitables;
 }
 
 void RecursiveBacktrackerExample::BreakWall(World* w, Point2D stackTop, Point2D visiting) {
-
+  if(visiting == stackTop.Up()) {
+    w->SetNorth(stackTop, false);
+    return;
+  }
+  else if(visiting == stackTop.Right()) {
+    w->SetEast(stackTop, false);
+    return;
+  }
+  if(visiting == stackTop.Down()) {
+    w->SetSouth(stackTop, false);
+    return;
+  }
+  if(visiting == stackTop.Left()) {
+    w->SetWest(stackTop, false);
+    return;
+  }
 }
