@@ -21,7 +21,7 @@ bool RecursiveBacktrackerExample::Step(World* w) {
 
   auto front = stack.front();
   visited[front.x][front.y] = true;
-  std::vector<Point2D> visiting = getVisitables(w, stack.front());
+  std::vector<Point2D> visiting = getVisitables(w, front);
 
   w->SetNodeColor(front, Color::Blue);
 
@@ -69,10 +69,24 @@ std::vector<Point2D> RecursiveBacktrackerExample::getVisitables(World* w, const 
   auto sideOver2 = w->GetSize() / 2;
   std::vector<Point2D> visitables;
 
-  if (!visited[p.Up().x][p.Up().y] && abs(p.Up().y) < sideOver2) visitables.push_back(p.Up());
-  if (!visited[p.Right().x][p.Right().y] && abs(p.Right().x) < sideOver2) visitables.push_back(p.Right());
-  if (!visited[p.Down().x][p.Down().y] && abs(p.Down().y) < sideOver2) visitables.push_back(p.Down());
-  if (!visited[p.Left().x][p.Left().y] && abs(p.Left().x) < sideOver2) visitables.push_back(p.Left());
+  // north
+  auto UP = p.Up();
+  if(p.y>-sideOver2 && !visited[UP.y][UP.x])
+    visitables.push_back(UP);
+  auto RIGHT = p.Right();
+  if(p.x>-sideOver2 && !visited[RIGHT.y][RIGHT.x])
+    visitables.push_back(RIGHT);
+  auto DOWN = p.Down();
+  if(p.y>-sideOver2 && !visited[DOWN.y][DOWN.x])
+    visitables.push_back(DOWN);
+  auto LEFT = p.Left();
+  if(p.x>-sideOver2 && !visited[LEFT.y][LEFT.x])
+    visitables.push_back(LEFT);
+
+  //if (!visited[p.Up().y][p.Up().x] && abs(p.Up().y) <= sideOver2) visitables.push_back(p.Up());
+  //if (!visited[p.Right().y][p.Right().x] && abs(p.Right().x) <= sideOver2) visitables.push_back(p.Right());
+  //if (!visited[p.Down().y][p.Down().x] && abs(p.Down().y) <= sideOver2) visitables.push_back(p.Down());
+  //if (!visited[p.Left().y][p.Left().x] && abs(p.Left().x) <= sideOver2) visitables.push_back(p.Left());
 
   return visitables;
 }
