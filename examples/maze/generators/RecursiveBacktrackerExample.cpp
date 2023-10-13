@@ -4,26 +4,39 @@
 #include <climits>
 
 bool RecursiveBacktrackerExample::Step(World* w) {
-  stack.push_back(randomStartPoint(w));
-  while(!stack.empty())
+
+  auto rnd = randomStartPoint(w);
+
+  // stop cond
+  if(stack.empty() && rnd == Point2D(INT_MAX, INT_MAX)){
+    return false;
+  }
+
+  // start
+  if(stack.empty())
   {
-    visited[stack.front().x][stack.front().y] = true;
-    std::vector<Point2D> visiting = getVisitables(w,stack.front());
-    if(visiting.empty())
-    {
-      stack.pop_back();
-    }
-    else if (visiting.size() == 1)
-    {
-      BreakWall(w ,stack.front(), visiting[0]);
-      stack.push_back(visiting[0]);
-    }
-    else
-    {
-      int rand = Random().Range(0, visiting.size() - 1);
-      BreakWall(w, stack.front(), visiting[rand]);
-      stack.push_back(visiting[rand]);
-    }
+    stack.push_back(rnd);
+    return true;
+  }
+
+  auto front = stack.front();
+  visited[front.x][front.y] = true;
+  std::vector<Point2D> visiting = getVisitables(w, stack.front());
+
+  w->SetNodeColor(front, Color::Blue);
+
+  if (!visiting.empty()) {
+    stack.pop_back();
+    w->SetNodeColor(front, Color::Black);
+  } else if (visiting.size() == 1) {
+    BreakWall(w, front, visiting[0]);
+    stack.push_back(visiting[0]);
+    w->SetNodeColor(visiting[0], Color::Purple);
+  } else {
+    int rand = Random().Range(0, visiting.size() - 1);
+    BreakWall(w, front, visiting[rand]);
+    stack.push_back(visiting[rand]);
+    w->SetNodeColor(visiting[rand], Color::Purple);
   }
 
   return true;
