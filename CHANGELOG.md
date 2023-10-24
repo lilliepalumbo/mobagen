@@ -1,3 +1,17 @@
+# [1.14.0](https://github.com/InfiniBrains/mobagen/compare/v1.13.10...v1.14.0) (2023-10-11)
+
+
+### Features
+
+* **catchthecat:** add better boilerplate to the agent ([7c6a986](https://github.com/InfiniBrains/mobagen/commit/7c6a986edf6f15996b84dbd90c62a353b0af347b))
+
+## [1.13.10](https://github.com/InfiniBrains/mobagen/compare/v1.13.9...v1.13.10) (2023-09-26)
+
+
+### Bug Fixes
+
+* **flocking:** add comments ([c35fb48](https://github.com/InfiniBrains/mobagen/commit/c35fb487b624f76d6115fc13bb93e5bb313892b7))
+
 ## [1.13.9](https://github.com/InfiniBrains/mobagen/compare/v1.13.8...v1.13.9) (2023-09-06)
 
 

@@ -3,48 +3,49 @@
 //
 
 #include "HexagonGameOfLife.h"
+#include <iostream>
 void HexagonGameOfLife::Step(World& world) {
-  for (int x = 0; x < world.SideSize(); x++) {
-      for (int y = 0; y < world.SideSize(); y++) {
-          int neighborCount = CountNeighbors(world, {x, y});
-          bool isAlive = world.Get({x, y});
-          world.SetNext({x,y}, isAlive);
-          if (isAlive)
-          {
-              if (neighborCount < 2 || neighborCount > 3)
-              {
-                world.SetNext({x,y}, false);
-              }
-          }
-          else
-          {
-              if (neighborCount == 3)
-              {
-                world.SetNext({x,y}, true);
-              }
-
-          }
+  for (int y = 0; y < world.SideSize(); ++y) {
+    for (int x = 0; x < world.SideSize(); ++x)
+    {
+      int neighbors = CountNeighbors(world,Point2D(x,y));
+      if (neighbors==2)//(neighbors==2&&world.Get(Point2D(x,y)))||
+      {
+        world.SetNext(Point2D(x,y), true);
       }
+      else
+      {
+        world.SetNext(Point2D(x,y), false);
+      }
+    }
   }
+
+  world.SwapBuffers();
 }
 int HexagonGameOfLife::CountNeighbors(World& world, Point2D point) {
-  int neighborCount = 0;
+  int count;
+//assume 1,1
+  bool shift =point.y%2!=0;
+  if (shift){//assume 1,1
+    count= world.Get(point.Up())+//1,0
+           world.Get(point.Right().Up())+//2,0
+           world.Get(point.Right())+//2,1
+           world.Get(point.Right().Down())+//2,2
+           world.Get(point.Down())+//1,2
+           world.Get(point.Left());//0,1
 
-  world.Get(point.Left()) ? neighborCount++ : NULL;
-  world.Get(point.Right()) ? neighborCount++ : NULL;
-  world.Get(point.Up()) ? neighborCount++ : NULL;
-  world.Get(point.Down()) ? neighborCount++ : NULL;
 
-  if(point.y % 2 == 1)
-  {
-    world.Get(point + Point2D(1, 1)) ? neighborCount++ : NULL;
-    world.Get(point + Point2D(1, -1)) ? neighborCount++ : NULL;
   }
-  else
-  {
-    world.Get(point + Point2D(-1, -1)) ? neighborCount++ : NULL;
-    world.Get(point + Point2D(-1, 1)) ? neighborCount++ : NULL;
+  else{//assume 2,2
+    count = world.Get(point.Up().Left())+//1,1
+           world.Get(point.Up())+//2,1
+           world.Get(point.Right())+//3,2
+           world.Get(point.Down())+//2,3
+           world.Get(point.Down().Left())+//1,3
+           world.Get(point.Left());//1,2
   }
 
-  return neighborCount;
+  return count;
+
+
 }
