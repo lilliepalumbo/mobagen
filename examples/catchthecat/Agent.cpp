@@ -37,10 +37,10 @@ std::vector<Point2D> Agent::generatePath(World* w){
 
 std::vector<Point2D> Agent::getVisitableNeighbors(World* w, const Point2D &current) {
   std::vector<Point2D> neighbors;
-  Point2D UP = current.Up(), RIGHT = current.Right(), Down = current.Down(), LEFT = current.Left();
+  Point2D NE = w->NE(current), NW = w->NW(current), W = w->W(current), SW = w->SW(current), SE = w->SE(current), E = w->E(current);
 
-  if (UP != w->getCat())
+  if (NE != w->getCat() && w->isValidPosition(NE))
   {
-    neighbors.push_back(UP);
+    neighbors.push_back(NE);
   }
 }
