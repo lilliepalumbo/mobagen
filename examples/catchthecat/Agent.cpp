@@ -39,8 +39,12 @@ std::vector<Point2D> Agent::getVisitableNeighbors(World* w, const Point2D &curre
   std::vector<Point2D> neighbors;
   Point2D NE = w->NE(current), NW = w->NW(current), W = w->W(current), SW = w->SW(current), SE = w->SE(current), E = w->E(current);
 
-  if (NE != w->getCat() && w->isValidPosition(NE))
+  if (NE != w->getCat() && w->isValidPosition(NE) && !w->getContent(NE))
   {
     neighbors.push_back(NE);
+  }
+  if (NW != w->getCat() && w->isValidPosition(NW) && !w->getContent(NW))
+  {
+    neighbors.push_back(NW);
   }
 }
