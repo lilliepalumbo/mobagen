@@ -19,15 +19,29 @@ std::vector<Point2D> Agent::generatePath(World* w){
   while (!frontier.empty()){
     // get the current from frontier
     auto current = frontier.front();
+
+    if(w->catWinsOnSpace(current))
+    {
+      // quit early
+    }
+
     // remove the current from frontierset
     frontierSet.erase(current);
     // mark current as visited
     visited[current] = true;
     // getVisitableNeightbors(world, current) returns a vector of neighbors that are not visited, not cat, not block, not in the queue
+    auto neightbors = getVisitableNeighbors(w, current);
     // iterate over the neighs:
       // for every neighbor set the cameFrom
       // enqueue the neighbors to frontier and frontierset
-    // do this up to find a visitable border and break the loop
+    for(auto neighbor : neightbors)
+    {
+      cameFrom.at(neighbor) = current;
+      frontier.push(neighbor);
+      frontierSet.emplace(neighbor);
+
+
+    }
   }
 
   // if the border is not infinity, build the path from border to the cat using the camefrom map
@@ -47,4 +61,22 @@ std::vector<Point2D> Agent::getVisitableNeighbors(World* w, const Point2D &curre
   {
     neighbors.push_back(NW);
   }
+  if (W != w->getCat() && w->isValidPosition(W) && !w->getContent(W))
+  {
+    neighbors.push_back(W);
+  }
+  if (SW != w->getCat() && w->isValidPosition(SW) && !w->getContent(SW))
+  {
+    neighbors.push_back(SW);
+  }
+  if (SE != w->getCat() && w->isValidPosition(SE) && !w->getContent(SE))
+  {
+    neighbors.push_back(SE);
+  }
+  if (E != w->getCat() && w->isValidPosition(E) && !w->getContent(E))
+  {
+    neighbors.push_back(E);
+  }
+
+  return neighbors;
 }
